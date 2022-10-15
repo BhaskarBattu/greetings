@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Build-Jdk-Spec: 16
-Implementation-Title: fpgreetings
-Implementation-Version: 1.5.7.RELEASE
-Implementation-Vendor: Pivotal Software, Inc.
-Main-Class: com.apptmyz.fpcontrolpanel.FpControlPanelApplication
-Created-By: Maven Integration for Eclipse
-
