@@ -49,5 +49,9 @@ public class Constants {
 	public static final String REQUEST_INCOMPLETE = "Request Incomplete";
 	public static final String ERRORS_EXCEPTION_IN_SERVER = "Exception in server";
 	
-	public static final String SECRETKEY = "birthdaywishes22";
+	//public static final String SECRETKEY = "birthdaywishes22";
+	public static final String SECRETKEY = "YmlydGhkYXl3aXNoZXMyMg=="; // encoded string
+	
+	public static final int CALENDER_ADDRESS_TYPE = 1;
+	public static final int CALENDER_SECRET_SANTA_SHOW_TYPE = 2;
 }

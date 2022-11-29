@@ -15,6 +15,7 @@ public class TestEncrption {
 		Cipher c = Cipher.getInstance(ALGO);
 		c.init(Cipher.ENCRYPT_MODE, key);
 		byte[] encVal = c.doFinal(Data.getBytes());
+		System.out.println("Encrypted:" + new String(encVal));
 		String encryptedValue = Base64.getEncoder().encodeToString(encVal);
 		return encryptedValue;
 	}

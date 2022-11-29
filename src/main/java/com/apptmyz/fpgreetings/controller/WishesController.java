@@ -63,7 +63,7 @@ public class WishesController {
 
 			log.info("Encrypted string data:"+ encData);
 
-			response = wishesService.saveBirthdayWishesData(encData);
+			response = wishesService.getBirthdayWishesData(encData);
 
 			if(response == null)
 				response = baseService.errorResponse(false, "EROR", Constants.INVALID_STATUS_CODE, null);

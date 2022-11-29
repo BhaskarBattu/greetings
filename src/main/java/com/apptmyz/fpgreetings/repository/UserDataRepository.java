@@ -5,6 +5,9 @@
 
 package com.apptmyz.fpgreetings.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.apptmyz.fpgreetings.entity.UserData;
@@ -17,5 +20,6 @@ import com.apptmyz.fpgreetings.entity.UserData;
  */
 public interface UserDataRepository extends CrudRepository<UserData, Integer> {
 
-
+	List<UserData> findByCreatedTimestampBetweenAndActiveFlag(Date fromDate, Date toDate, int activeFlag);
+	
 }

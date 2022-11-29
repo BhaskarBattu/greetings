@@ -24,4 +24,6 @@ public interface UserRegistrationDataRepository extends CrudRepository<UserRegis
 	
 	@Query(nativeQuery = true, value = "SELECT * FROM greetings.user_registration_data where email = ?1 and active_flag = ?2 and date_format(dob, '%d%m') = ?3")
 	UserRegistrationData getByEmailAndActiveFlagAndDob(String mailId, int activeFlag, String ddMM);
+	
+	UserRegistrationData findByEmailAndPasswordAndActiveFlag(String mailId, String password, int activeFlag);
 }

@@ -38,7 +38,7 @@ public class UserRegistrationController {
 		{
 			log.info("do checkMailIdRegisteredOrnot Started....."+ new Date());
 
-			log.info("Encrypted string data:"+ encData);
+			System.out.println("Encrypted string data:"+ encData);
 
 			response = userRegistrationService.isMailIdRegistered(encData);
 
@@ -64,6 +64,29 @@ public class UserRegistrationController {
 			log.info("Encrypted string data:"+ encData);
 
 			response = userRegistrationService.userRegistration(encData);
+
+			if(response == null)
+				response = baseService.errorResponse(false, "EROR", Constants.INVALID_STATUS_CODE, null);
+		}
+		catch(Exception e)
+		{
+			response =  baseService.errorResponse(false, "EROR", Constants.INVALID_STATUS_CODE, null);
+		}
+		log.info("userRegistration End....."+ new Date());
+		return response;
+	}
+	
+	@PostMapping(path ="/login")
+	public ResponseEntity<GeneralResponse> userLogin(HttpServletRequest httprequest, HttpServletResponse httpresponse, @RequestBody String encData)
+	{
+		ResponseEntity<GeneralResponse> response = null;
+		try
+		{
+			log.info("do userRegistration Started....."+ new Date());
+
+			log.info("Encrypted string data:"+ encData);
+
+			response = userRegistrationService.checkUserIsableTologinOrNot(encData);
 
 			if(response == null)
 				response = baseService.errorResponse(false, "EROR", Constants.INVALID_STATUS_CODE, null);

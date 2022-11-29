@@ -5,6 +5,9 @@
 
 package com.apptmyz.fpgreetings.repository;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.apptmyz.fpgreetings.entity.WishesData;
@@ -17,5 +20,7 @@ import com.apptmyz.fpgreetings.entity.WishesData;
  */
 public interface WishesDataRepository extends CrudRepository<WishesData, Integer> {
 
-
+	WishesData findByUserRegIdAndToEmailAndBdayDateAndActiveFlag(Integer userRegId, String toMailId, Date dob, int activeFlag);
+	
+	List<WishesData> findByToEmailAndBdayDateAndActiveFlag(String toMailId, Date dob, int activeFlag);
 }

@@ -28,7 +28,7 @@ public class UserRegistrationService extends BaseService{
 		log.info("isMailIdRegistered.....started");
 		ResponseEntity<GeneralResponse> response = null;
 		UserRegistrationData userRegData = null;
-		try
+		try	
 		{
 			String decmailId = decrypt(encData, Constants.SECRETKEY);
 			if(decmailId != null)
@@ -78,15 +78,58 @@ public class UserRegistrationService extends BaseService{
 						userData.setName(regData.getUserName());
 						userData.setPassword(regData.getPassword());// MD$
 						userData.setDob(formatdDate);
-						userData.setPhoto(decryptData); // check
+						userData.setPhoto(createImageFiles(regData.getDob(), regData.getPhoto() )); // check
 						userData.setTagName(regData.getTagName());
 						userData.setRequestedTimestamp(new Date());
 						userData.setCreatedTimestamp(new Date());
 						userData.setCreatedBy(regData.getEmailId());
 						userData.setActiveFlag(1);
-
 						userRegistrationDataRepository.save(userData);
 
+						response = successResponse(true, "User Registration is Successful", Constants.CORRECT_STATUS_CODE, null);
+					}
+					else
+						response = errorResponse(false, "Invalid Data..details is missing", Constants.INVALID_STATUS_CODE, null);
+				}
+				else 
+					response = errorResponse(false, "Invalid Data conversion", Constants.INVALID_STATUS_CODE, null);
+			}
+			else
+				response = errorResponse(false, "Invalid Encryption", Constants.INVALID_STATUS_CODE, null);
+		}	
+		catch(Exception e)
+		{
+			log.error("Exception occured userRegistration ", e);
+			response = errorResponse(false,"Exception Occured.... Unable to get Data  ",500,null);
+		}
+		log.info("userRegistration.....end");
+		return response;
+	}
+
+	public ResponseEntity<GeneralResponse> checkUserIsableTologinOrNot(String encData)
+	{
+		log.info("userRegistration.....started");
+		ResponseEntity<GeneralResponse> response = null;
+		Gson gson = new GsonBuilder().serializeNulls().create();
+		try
+		{
+			String decryptData = decrypt(encData, Constants.SECRETKEY);
+			if(decryptData != null)
+			{
+				log.info("Decrypted data:"+ decryptData);
+
+				Registration regData = gson.fromJson(decryptData, Registration.class);
+				if(regData != null)
+				{
+					log.info("Registerd Data : "+ regData);
+					if(regData.getEmailId() != null && regData.getPassword() != null )
+					{
+						UserRegistrationData userData = userRegistrationDataRepository.findByEmailAndPasswordAndActiveFlag(regData.getEmailId(), regData.getPassword(), 1 ) ;
+
+						if(userData != null)							
+							response = successResponse(true, "User Logged in  Successfully", Constants.CORRECT_STATUS_CODE, null);
+						else
+							response = errorResponse(false, "User Not registered.", Constants.INVALID_STATUS_CODE, null);
 					}
 					else
 						response = errorResponse(false, "Invalid Data..details is missing", Constants.INVALID_STATUS_CODE, null);

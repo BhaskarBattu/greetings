@@ -1,6 +1,8 @@
 package com.apptmyz.fpgreetings.services;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -35,7 +38,7 @@ public class BaseService
 	public static final Logger logger = Logger.getLogger(BaseService.class);
 
 	private static final String ALGO = "AES"; // Default uses ECB PKCS5Padding
-	
+
 	@Autowired
 	RestTemplate resttemplate;
 
@@ -104,7 +107,7 @@ public class BaseService
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		try 
 		{   
-//			cbDate = getCellValueAccordingToCellType(cbDateCellValue);
+			//			cbDate = getCellValueAccordingToCellType(cbDateCellValue);
 			cbDate = String.valueOf(cbDateCellValue);
 			date = sdf.parse(cbDate+" 00:00:00");
 		} 
@@ -141,7 +144,7 @@ public class BaseService
 		}
 		return date;
 	}
-	
+
 	public Date ChangeDateFormatSpecific1(String cbDateCellValue)
 	{
 		Date date = null;
@@ -291,8 +294,8 @@ public class BaseService
 			throw e;
 		}
 	}
-	
-	
+
+
 	public void closeBufferedReader(BufferedReader br)
 	{
 		try {
@@ -316,7 +319,7 @@ public class BaseService
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public Date setformatDate(String format,String date) throws Exception
 	{
 		SimpleDateFormat dateFormat = null;
@@ -347,7 +350,7 @@ public class BaseService
 	}
 
 	public String decrypt(String strToDecrypt, String secret) {
-		try {
+		try {			
 			Key key = generateKey(secret);
 			Cipher cipher = Cipher.getInstance(ALGO);
 			cipher.init(Cipher.DECRYPT_MODE, key);
@@ -374,4 +377,40 @@ public class BaseService
 		return new String(encoded);
 	}
 
+	public String createImageFiles(String dob, String encodedImage)
+	{
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssss");
+		Date date = new Date();
+		String afileName = null;
+		if(encodedImage != null){
+			try {
+				byte[] decodedString = Base64.getDecoder().decode(encodedImage);
+				ByteArrayInputStream bis = new ByteArrayInputStream(decodedString);
+				BufferedImage bImage2 = ImageIO.read(bis);
+
+				int width = bImage2.getWidth();
+				int height = bImage2.getHeight();
+				BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+				int px[] = new int[width * height];
+				bImage2.getRGB(0, 0, width, height, px, 0, width);
+				output.setRGB(0, 0, width, height, px, 0, width);
+
+				afileName = dob+"_"+format.format(date)+".jpeg";
+				String afilePath = filesUtil.getProperty("images.upload.path");
+				File outputfile = new File(afilePath,afileName);
+				ImageIO.write(output, "jpeg", outputfile);
+
+			} catch (IOException e) {
+				logger.info("IO Exception occured saveing image info", e);
+				afileName = null;
+
+			}catch (Exception e) {
+				logger.info("Exception occured saveing image info", e);
+				afileName = null;
+
+			}
+		}
+
+		return afileName;
+	}
 }

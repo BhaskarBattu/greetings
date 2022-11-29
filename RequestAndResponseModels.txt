@@ -1,0 +1,71 @@
+1. API: /api/v1/user/check/mailid
+
+Request: emailId
+
+Response : 
+Success: {
+	"status" : true,
+	"message" : "user is not registered yer. Please process the request",
+	"data" : null
+	"statusCode" : 10000  
+} 
+
+Failure : {
+	"status" : false,
+	"message" : "depends on failure",
+	"data" : null
+	"statusCode" : 10002  
+} 
+
+
+2. API: /api/v1/user/registration
+
+Request: {
+	"emailId" : "test@apptmyz.in",
+	"userName" : "test",
+	"password" : "password",
+	"dob": "ddMMyyyy", //it should be in this format
+	"photo": "base64 encoded data"
+	"tagName" : "nick name"
+	
+}
+
+Response : 
+Success: {
+	"status" : true,
+	"message" : "User Registration is Successful",
+	"data" : null
+	"statusCode" : 10000  
+} 
+
+Failure : {
+	"status" : false,
+	"message" : "depends on failure",
+	"data" : null
+	"statusCode" : 10002  
+} 
+
+3. /api/v1/wishes/save/birthday/greeting
+
+Request: {
+	"userId" : 1,
+	"toMailId" : "test@apptmyz.in",
+	"greeting" : "greeting msg",
+	"dob": "ddMMyyyy", //it should be in this format
+	
+}
+
+Response : 
+Success: {
+	"status" : true,
+	"message" : "Your wishes is saved successfully",
+	"data" : null
+	"statusCode" : 10000  
+} 
+
+Failure : {
+	"status" : false,
+	"message" : "depends on failure",
+	"data" : null
+	"statusCode" : 10002  
+} 
